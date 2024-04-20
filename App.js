@@ -5,7 +5,8 @@ import mongoose from "mongoose";
 import cors from "cors";
 import session from "express-session";
 import ChatRoutes from "./OpenAI/routes.js";
-mongoose.connect("mongodb://127.0.0.1:27017/senzu");
+const CONNECTION_STRING = process.env.DB_CONNECTION_STRING || "mongodb://127.0.0.1:27017/senzu";
+mongoose.connect(CONNECTION_STRING);
 const app = express();
 app.use(cors({
     credentials: true,
