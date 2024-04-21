@@ -4,9 +4,10 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import session from "express-session";
-import ChatRoutes from "./OpenAI/routes.js";
+import Routes from "./Routes/routes.js";
 mongoose.connect("mongodb://127.0.0.1:27017/senzu");
 const app = express();
+console.log(process.env.OPENAI_API_KEY);
 app.use(cors({
     credentials: true,
     origin: [process.env.FRONTEND_URL, "http://localhost:3000"]
@@ -29,6 +30,6 @@ app.use(
     session(sessionOptions)
 );
 Hello(app);
-ChatRoutes(app);
+Routes(app);
 app.listen(process.env.PORT || 4000);
 
