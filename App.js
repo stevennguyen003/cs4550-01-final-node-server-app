@@ -1,9 +1,11 @@
-import Hello from "./Hello.js";
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import session from "express-session";
+import UserRoutes from "./profile/routes.js";
+
 mongoose.connect("mongodb://127.0.0.1:27017/senzu");
+
 const app = express();
 app.use(cors({
     credentials: true,
@@ -26,6 +28,8 @@ app.use(express.json());
 app.use(
     session(sessionOptions)
 );
-Hello(app);
+
+UserRoutes(app);
+
 app.listen(process.env.PORT || 4000);
 
