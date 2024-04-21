@@ -5,6 +5,9 @@ import mongoose from "mongoose";
 import cors from "cors";
 import session from "express-session";
 import ChatRoutes from "./OpenAI/routes.js";
+import UsersRoutes from "./Users/routes.js";
+
+
 const CONNECTION_STRING = process.env.DB_CONNECTION_STRING || "mongodb://127.0.0.1:27017/senzu";
 mongoose.connect(CONNECTION_STRING);
 const app = express();
@@ -25,11 +28,13 @@ if (process.env.NODE_ENV !== "development") {
         domain: process.env.HTTP_SERVER_DOMAIN,
     };
 }
+app.use('/uploads', express.static('uploads'));
 app.use(express.json());
 app.use(
     session(sessionOptions)
 );
 Hello(app);
 ChatRoutes(app);
+UsersRoutes(app);
 app.listen(process.env.PORT || 4000);
 

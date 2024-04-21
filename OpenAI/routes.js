@@ -1,5 +1,7 @@
 import OpenAI from "openai";
-const openai = new OpenAI();
+import "dotenv/config";
+
+const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY});
 
 const conversation = [];
 
