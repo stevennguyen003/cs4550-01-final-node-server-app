@@ -11,6 +11,7 @@ import UsersRoutes from "./Users/routes.js";
 const CONNECTION_STRING = process.env.DB_CONNECTION_STRING || "mongodb://127.0.0.1:27017/senzu";
 mongoose.connect(CONNECTION_STRING);
 const app = express();
+console.log(process.env.OPENAI_API_KEY);
 app.use(cors({
     credentials: true,
     origin: [process.env.FRONTEND_URL, "http://localhost:3000"]
