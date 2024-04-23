@@ -4,6 +4,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import session from "express-session";
+import FriendRoutes from "./Friends/routes.js";
 import ChatRoutes from "./OpenAI/routes.js";
 import UsersRoutes from "./Users/routes.js";
 
@@ -37,5 +38,6 @@ app.use(
 Hello(app);
 ChatRoutes(app);
 UsersRoutes(app);
+FriendRoutes(app);
 app.listen(process.env.PORT || 4000);
 
