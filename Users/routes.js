@@ -30,8 +30,9 @@ const upload = multer({ storage: storage });
 export default function UserRoutes(app) {
   const createUser = async (req, res) => {
     const user = await dao.createUser(req.body);
-    req.session["currentUser"] = user;
-    res.json(user);
+    const updatedUser = await dao.findUserById(user._id);
+    req.session["currentUser"] = updatedUser;
+    res.json(updatedUser);
   };
 
   const deleteUser = async (req, res) => {
