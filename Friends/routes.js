@@ -62,6 +62,16 @@ export default function FriendRoutes(app) {
     }
 });
 
+app.get("/api/users/search", async (req, res) => {
+  const { query } = req.query;
+  try {
+    const users = await dao.searchUsers(query);
+    res.json(users);
+  } catch (error) {
+    res.status(500).send({ message: "Error searching for users", error });
+  }
+});
+
   app.post("/api/friends", createFriendRequest);
   app.put("/api/friends/:requesterId/:recipientId", updateFriendRequest);
   app.get("/api/friends/:userId", findAllFriendRequestsByUser);

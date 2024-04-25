@@ -1,4 +1,5 @@
 import model from "./model.js"; 
+import UserModel from '../Users/model.js';
 
 export const createFriendRequest = async (friendData) => {
   return model.create(friendData);
@@ -24,4 +25,10 @@ export const deleteFriendRequest = async (requesterId, recipientId) => {
 
 export const findPendingRequestsToUser = async (userId) => {
   return model.find({ recipient: userId, status: 'pending' });
+};
+
+export const searchUsers = async (displayName) => {
+  return UserModel.find({
+    displayName: { $regex: new RegExp(displayName, 'i') } 
+  }).select('-password');
 };
