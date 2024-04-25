@@ -25,3 +25,13 @@ export const deleteFriendRequest = async (requesterId, recipientId) => {
 export const findPendingRequestsToUser = async (userId) => {
   return model.find({ recipient: userId, status: 'pending' });
 };
+
+export const searchUsers = (query) => {
+  return model.find({
+    $or: [
+      { username: { $regex: query, $options: "i" } },
+      { firstName: { $regex: query, $options: "i" } },
+      { lastName: { $regex: query, $options: "i" } }
+    ]
+  });
+};
