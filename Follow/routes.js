@@ -1,49 +1,40 @@
 import * as dao from "./dao.js";
 
-const createFollow = async (req, res) => {
-  try {
-    const { followerId, followeeId } = req.body;
-    const follow = await dao.createFollow(followerId, followeeId);
-    res.status(201).json(follow);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+export default function FollowRoutes(app) {
+  const createFollow = async (req, res) => {
+    const follow = await dao.createFollow(req.body);
+    const newFollow = await dao.findFollowsById(follow._id);
+    res.json(newFollow);
+  };
 
-const deleteFollow = async (req, res) => {
-  try {
-    const { followerId, followeeId } = req.body;
-    const result = await dao.deleteFollow(followerId, followeeId);
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ message: "Follow relationship not found." });
-    }
-    res.status(204).send();
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+  const deleteFollow = async (req, res) => {
+    const status = await dao.deleteFollow(req.params.followId);
+    res.json(status);
+  };
 
-const findFollowersByUserId = async (req, res) => {
-  try {
-    const followers = await dao.findFollowersByUserId(req.params.userId);
-    res.json(followers);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+  const findFollowsById = async (req, res) => {
+    const follow = await dao.findFollowsById(req.params.followId);
+    res.json(follow);
+  };
 
-const findFolloweesByUserId = async (req, res) => {
-  try {
-    const followees = await dao.findFolloweesByUserId(req.params.userId);
-    res.json(followees);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+  const findFollowsByUserId = async (req, res) => {
+    const { user } = req.query;
+    const follows = await dao.findFollowsByUserId(user);
+    res.json(follows);
+  };
 
-export default function FollowerRoutes(app) {
-  app.post('/api/follows', createFollow);
-  app.delete('/api/follows', deleteFollow);
-  app.get('/api/users/:userId/followers', findFollowersByUserId);
-  app.get('/api/users/:userId/following', findFolloweesByUserId);
-}
+  const updateFollow = async (req, res) => {
+    const { followId } = req.params;
+    const status = await dao.updateFollow(followId, req.body);
+    const currentFollowStatus = await dao.findFollowsById(followId);
+    res.json(status);
+  };
+  
+
+  app.post("/api/follows", createFollow);
+  app.get("/api/follows/:followId", findFollowsById);
+  app.put("/api/follows/:followId", updateFollow);
+  app.delete("/api/follows/:followId", deleteFollow);
+  app.get("/api/follows/user/:userId", findFollowsByUserId);
+ 
+};

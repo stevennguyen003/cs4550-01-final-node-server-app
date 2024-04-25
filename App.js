@@ -9,6 +9,7 @@ import ChatRoutes from "./OpenAI/routes.js";
 import UsersRoutes from "./Users/routes.js";
 import PostRoutes from "./Posts/routes.js";
 import CommentRoutes from "./Comments/routes.js";
+import FollowRoutes from "./Follow/routes.js";
 
 
 const CONNECTION_STRING = process.env.DB_CONNECTION_STRING || "mongodb://127.0.0.1:27017/senzu";
@@ -41,6 +42,7 @@ Hello(app);
 ChatRoutes(app);
 UsersRoutes(app);
 FriendRoutes(app);
+FollowRoutes(app);
 
 PostRoutes(app);
 CommentRoutes(app);
