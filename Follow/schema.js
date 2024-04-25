@@ -1,10 +1,28 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
-const followSchema = new Schema({
-    follower: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    followee: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-   // createdAt: { type: Date, default: Date.now }
-});
+const followsSchema = new mongoose.Schema(
+  {
 
-export default model('Follow', followSchema);
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", 
+      required: true,
+    },
+    followers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User", 
+      },
+    ],
+    followees: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+  },
+  { collection: "follows" }
+);
+
+export default followsSchema ;
