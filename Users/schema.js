@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    firstName: String,
-    lastName: String,
-    displayName: String,
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    displayName: { type: String, required: true },
     profilePicture: String,
     dob: Date,
     role: {
@@ -12,8 +12,19 @@ const userSchema = new mongoose.Schema({
         enum: ["USER", "ADMIN", ""],
         default: "USER",
     },
-    bio: String,
-    yearsOfExperience: Number,
+    bio: { type: String },
+    yearsOfExperience: { type: Number, required: true },
 },
-    { collection: "users" });
+    { discriminatorKey: 'role', collection: "users" });
 export default userSchema;
+
+const adminSchema = userSchema.discriminator('ADMIN', new mongoose.Schema({
+    department: String,
+}));
+
+const appUserSchema = userSchema.discriminator('USER', new mongoose.Schema({
+    sex: {
+        type: String,
+        enum: ["Male", "Female"],
+        required: true,}
+}));
