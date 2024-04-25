@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
     },
     bio: { type: String },
     yearsOfExperience: { type: Number, required: true },
+    sex: {
+        type: String,
+        enum: ["Male", "Female"],
+        required: true },
 },
     { discriminatorKey: 'role', collection: "users" });
 export default userSchema;
@@ -23,8 +27,8 @@ const adminSchema = userSchema.discriminator('ADMIN', new mongoose.Schema({
 }));
 
 const appUserSchema = userSchema.discriminator('USER', new mongoose.Schema({
-    sex: {
+    status: {
         type: String,
-        enum: ["Male", "Female"],
-        required: true,}
+        enum: ["BANNED", "NORMAL"],
+        default: "NORMAL",},
 }));

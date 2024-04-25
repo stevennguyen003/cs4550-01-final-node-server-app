@@ -59,9 +59,28 @@ export default function UserRoutes(app) {
 
   const updateUser = async (req, res) => {
     const { userId } = req.params;
-    const status = await dao.updateUser(userId, req.body);
+
+    const userUpdates = req.body;
+    var status;
+    const updatedUser = await dao.findUserById(userId);
+    if (userUpdates.role && userUpdates.role !== updatedUser.role) {
+      if (userUpdates.role === "ADMIN") {
+        delete userUpdates.status;
+        userUpdates.department = "Promoted Tester";
+
+      } else {
+        delete userUpdates.department;
+        userUpdates.status = "NORMAL";
+        console.log("Demote to normal user");
+        
+      }
+      
+      console.log("Update user");
+      status = await dao.updateRoleUser(userId, userUpdates);
+    } else {
+      status = await dao.updateUser(userId, userUpdates);
+    }
     const currentUser = await dao.findUserById(userId);
-    req.session["currentUser"] = currentUser;
     res.json(status);
   };
 

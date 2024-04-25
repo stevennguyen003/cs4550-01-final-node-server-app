@@ -17,3 +17,9 @@ export const updateUser = (userId, user) =>
 export const deleteUser = (userId) => model.deleteOne({ _id: userId });
 export const uploadProfilePicture = (userId, url) =>
   model.updateOne({ _id: userId }, { $set: { profilePicture: url } });
+export const updateRoleUser = (userId, user) =>
+  model.replaceOne({ _id: userId }, user, {
+    overwriteDiscriminatorKey: true,
+    runValidators: true
+});
+
