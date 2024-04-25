@@ -104,13 +104,12 @@ export default function UserRoutes(app) {
     }
     // Optionally update the user record to reflect the new profile picture path
     dao
-      .updateUser(req.params.userId, { profilePicture: req.file.path })
+      .uploadProfilePicture(req.params.userId, req.file.path)
       .then(() => res.send(`File uploaded successfully: ${req.file.path}`))
       .catch((err) =>
         res.status(500).send("Failed to update user with new profile picture.")
       );
   };
-
 
   app.post("/api/users", createUser);
   app.get("/api/users", findAllUsers);
