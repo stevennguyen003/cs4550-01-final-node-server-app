@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import axios from "axios";
+import * as dao from "./dao.js";
 import "dotenv/config";
 const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY});
 
@@ -27,33 +28,32 @@ export default function ChatRoutes(app) {
     app.get("/api/openai/conversation", getConversation);
     app.post("/api/openai/conversation", postChat);
 
-    // EXERCISEDB API
-    const getExercises = async (req, res) => {
-        const options = {
-            method: 'GET',
-            url: 'https://exercisedb.p.rapidapi.com/exercises/name/' + req.params.search,
-            params: { limit: '10' },
-            headers: {
-                'X-RapidAPI-Key': '57ba4df950msh7c718251e0b1735p162b19jsn8fc729eb5660',
-                'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com'
-            }
-        };
+    // // EXERCISEDB API
+    // const getExercises = async (req, res) => {
+    //     const options = {
+    //         method: 'GET',
+    //         url: 'https://exercisedb.p.rapidapi.com/exercises/name/' + req.params.search,
+    //         params: { limit: '10' },
+    //         headers: {
+    //             'X-RapidAPI-Key': '57ba4df950msh7c718251e0b1735p162b19jsn8fc729eb5660',
+    //             'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com'
+    //         }
+    //     };
 
-        try {
-            const response = await axios.request(options);
-            console.log(response.data);
-            res.json(response.data);
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    //     try {
+    //         const response = await axios.request(options);
+    //         console.log(response.data);
+    //         res.json(response.data);
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }
 
-    const saveExercise = async (req, res) => {
-        const exercise = req.body;
-        savedExercises.push(exercise);
-        res.json(savedExercises);
-    };
+    // const saveExercise = async (req, res) => {
+    //     const exercise = await dao.saveExercise(req.body);
+    //     res.json(exercise);
+    // };
 
-    app.post("/api/exercises/:search", saveExercise);
-    app.get("/api/exercises/:search", getExercises);
+    // app.post("/api/exercises/", saveExercise);
+    // app.get("/api/exercises/", getExercises);
 }
