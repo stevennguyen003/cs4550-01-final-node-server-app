@@ -4,6 +4,7 @@ import "dotenv/config";
 const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY});
 
 const conversation = [];
+const savedExercises = [];
 
 export default function ChatRoutes(app) {
 
@@ -46,5 +47,13 @@ export default function ChatRoutes(app) {
             console.error(error);
         }
     }
+
+    const saveExercise = async (req, res) => {
+        const exercise = req.body;
+        savedExercises.push(exercise);
+        res.json(savedExercises);
+    };
+
+    app.post("/api/exercises/:search", saveExercise);
     app.get("/api/exercises/:search", getExercises);
 }
